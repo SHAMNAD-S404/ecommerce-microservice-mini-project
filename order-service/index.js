@@ -10,6 +10,8 @@
 
  //to create order 
  function createOrder(products , userEmail) {
+    
+    //to find total price 
     let total = 0;
     for(let t=0;t <products.length;t++){
         total += products[t].price;
