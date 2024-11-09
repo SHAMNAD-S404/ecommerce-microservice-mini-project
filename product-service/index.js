@@ -7,7 +7,7 @@ const amqp      = require("amqplib")
 const productDB = require("./model/productModel")
 const isAuth    = require('../isAuthenticated')
 let channel, connection;
-let order;
+let orders;
 
 app.use(express.json())
 
@@ -45,7 +45,6 @@ app.post('/product/create',isAuth,async(req,res) => {
 })
 
 //buy products
-
 app.post('/product/buy', isAuth , async(req,res) => {
     const { ids } = req.body;
     const products = await productDB.find({_id:{ $in:ids } });
@@ -61,14 +60,15 @@ app.post('/product/buy', isAuth , async(req,res) => {
     )  );
 
     //consuming from the product channel
-    channel.consume("PRODUCT",(data) => {
-        console.log("consuming PRODUCT queue");      
-        order = JSON.parse(data.content);
-        channel.ack(data)
-    });
-    return res.json(order)
-});
+    channel.consume("PRODUCT", async(data) => {
 
+        console.log("consuming PRODUCT queue");   
+        orders = await JSON.parse(data.content);      
+        channel.ack(data)
+        return res.status(200).json(orders)
+    });
+    
+});
 
 app.listen(PORT,()=>{
     console.log(`Product service at http://localhost:${PORT}`);
