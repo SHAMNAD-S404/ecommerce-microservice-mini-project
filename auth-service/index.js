@@ -4,11 +4,31 @@ const mongoose = require("mongoose")
 const PORT     = process.env.AUTH_PORT || 5001;
 const UserDB   = require("./model/userModel");
 const jwt      = require("jsonwebtoken")
+const amqp     = require("amqplib")
+let channel,connection;
 
 app.use(express.json())
 
-//user sign-in
 
+//connecting to rabbitMQ
+const connectRabitMQ = async() => {
+    try {
+        
+        const amqpServer = "amqp://localhost:5672";
+        connection = await amqp.connect(amqpServer);
+        channel    = await connection.createChannel();
+        //here creating NOTIFICATION queue again have no problem its only recreate if its not exist
+        await channel.assertQueue("NOTIFICATION") 
+
+    } catch (error) {
+        console.error("failed to connect with rabbitmq , error:",error);
+        
+    }
+}
+
+connectRabitMQ();
+
+//user sign-in
 app.post ("/auth/login" ,async(req,res) => {
     try {
         const {email,password} = req.body;
@@ -46,6 +66,7 @@ app.post ("/auth/register", async (req,res) => {
     const {email,password,name} = req.body;
 
     const alreadyExist = await UserDB.findOne({email});
+    
     if (alreadyExist) {
         return res.json({error:"User with the email id is already exist"})
     } else {
@@ -56,6 +77,20 @@ app.post ("/auth/register", async (req,res) => {
             password
         })
         newUser.save();
+
+
+        const notificationData = {
+            email,
+            subject:"Welcome to our Service",
+            message: `Hi ${name}, your account has been created successfully.`,
+        }
+
+        //send message to the NOTIFICATIN QUEUE
+        channel.sendToQueue("NOTIFICATION",
+            ArrayBuffer.from(JSON.stringify(notificationData))
+        );
+        console.log("Message was sended to notification queue ");
+
         return res.status(200).json({success:"user created successfully" , userName:newUser.name});
     }
 
