@@ -45,7 +45,9 @@ connect().then(async () => {
     const { products, userEmail } = JSON.parse(data.content);
     const newOrder = await createOrder(products, userEmail);
     channel.ack(data);
+    //sending message to product queue
     channel.sendToQueue("PRODUCT", Buffer.from(JSON.stringify({ newOrder })));
+    //sending message to notification queue
     channel.sendToQueue(
       "NOTIFICATION",
       Buffer.from(
