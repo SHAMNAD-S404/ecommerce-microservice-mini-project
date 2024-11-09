@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Login & Signup Page</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <!-- Login Form -->
+      <div id="loginForm" class="form">
+        <h2>Login</h2>
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button onclick=" validateLogin() " class="btn">Login</button>
+        <p class="toggle-link">New user? <span onclick="toggleForm()">Sign up</span></p>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signupForm" class="form hidden">
+        <h2>Sign Up</h2>
+        <div class="form-group">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="signupName">Name</label>
+          <input type="text" id="signupName" required>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" required>
+        </div>
+        <button onclick="validateSignup()" class="btn">Sign Up</button>
+        <p class="toggle-link">Already have an account? <span onclick="toggleForm()">Login</span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+
+    function toggleForm() {
+      document.getElementById('loginForm').classList.toggle('hidden');
+      document.getElementById('signupForm').classList.toggle('hidden');
+    }
+
+    async function validateLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      if (email && password) {
+            
+            try {
+              
+              const response = await fetch('auth/login',{
+
+                method:"POST",
+                headers:{"Content-Type" : "application/json"},
+                body:JSON.stringify({
+                  email,password
+                })
+              })
+
+              const data = await response.json()
+              console.log(data);
+              
+              if (data.success) {
+                    alert("login sucess")                               
+              } else {
+                alert(data.error)
+              }
+
+            } catch (error) {
+              console.error(error);
+              
+            }
+
+      } else {
+        alert('Please fill in both fields');
+      }
+    }
+
+    async function validateSignup() {
+      const email = document.getElementById('signupEmail').value;
+      const name = document.getElementById('signupName').value;
+      const password = document.getElementById('signupPassword').value;
+
+      if (email && name && password) {
+
+        try {
+
+          alert("helo")
+
+          const response = await fetch("/auth/register", {
+            method:"POST",
+            headers:{"Content-Type" : "application/json"},
+            body:JSON.stringify({
+              email,
+              name,
+              password
+            })
+          })
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert(data.success)
+          } else {
+            alert(data.error)
+          }
+
+        } catch (error) {
+          console.error(error);
+          
+        }
+
+      } else {
+        alert('Please fill in all fields');
+      }
+    }
+  </script>
+</body>
+</html>

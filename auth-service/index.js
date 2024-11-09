@@ -5,9 +5,15 @@ const PORT = process.env.AUTH_PORT || 5001;
 const UserDB = require("./model/userModel");
 const jwt = require("jsonwebtoken");
 const amqp = require("amqplib");
+const axios = require("axios")
 let channel, connection;
 
+
+app.set("view engine" , "ejs");
+app.set("views","./views")
+
 app.use(express.json());
+app.use(express.static("public"))
 
 //connecting to rabbitMQ
 const connectRabitMQ = async () => {
@@ -23,6 +29,18 @@ const connectRabitMQ = async () => {
 };
 
 connectRabitMQ();
+
+//render login page
+app.get('/',(req,res) => {
+    res.render("login")
+})
+
+app.get('/auth/login',(req,res) => {
+    res.redirect('/')
+})
+
+
+
 
 //user sign-in
 app.post("/auth/login", async (req, res) => {
@@ -57,6 +75,8 @@ app.post("/auth/login", async (req, res) => {
 
 //user signup
 app.post("/auth/register", async (req, res) => {
+    console.log(req.body);
+    
   const { email, password, name } = req.body;
 
   const alreadyExist = await UserDB.findOne({ email });
