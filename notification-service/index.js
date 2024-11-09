@@ -31,6 +31,8 @@ connect()
             const {email,subject,message} = JSON.parse(data.content)
             await sendMail(email,subject,message);
             channel.ack(data);
+            console.log("message acknowledged by notification service");
+            
 
         })
 

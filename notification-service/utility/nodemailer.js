@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import dotenv from  "dotenv";
-dotenv.config();
+dotenv.config({path:'../.env'});
+
+
 
 export const sendMail = async (email, subject, message) => {
   try {
@@ -9,9 +11,10 @@ export const sendMail = async (email, subject, message) => {
         host:"smtp.gmail.com",
         port:587,
         auth:{
-            user:"digicartecom@gmail.com",
-            pass: "nsqz ojuj ecch bdep"
+            user:process.env.USER_MAIL,
+            pass:process.env.PASS_MAIL
         }
+        
     })
 
     const mailOption = {
