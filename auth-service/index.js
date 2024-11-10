@@ -91,6 +91,7 @@ app.post("/auth/register", async (req, res) => {
     });
     newUser.save();
 
+
     const notificationData = {
       email,
       subject: "Welcome to our Service",

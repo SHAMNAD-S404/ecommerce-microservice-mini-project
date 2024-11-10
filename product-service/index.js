@@ -36,8 +36,12 @@ mongoose.connect("mongodb://localhost/product-service")
 
 //get products page
 
-app.get("/" , (req,res) => {
-    res.render('home')
+app.get("/" , async(req,res) => {
+    const products = await productDB.find();
+    console.log(products);
+    
+    return res.render('home',{products})
+
 })
 
 // add products
