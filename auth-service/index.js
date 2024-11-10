@@ -5,15 +5,14 @@ const PORT = process.env.AUTH_PORT || 5001;
 const UserDB = require("./model/userModel");
 const jwt = require("jsonwebtoken");
 const amqp = require("amqplib");
-const axios = require("axios")
+const axios = require("axios");
 let channel, connection;
 
-
-app.set("view engine" , "ejs");
-app.set("views","./views")
+app.set("view engine", "ejs");
+app.set("views", "./views");
 
 app.use(express.json());
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 //connecting to rabbitMQ
 const connectRabitMQ = async () => {
@@ -31,21 +30,20 @@ const connectRabitMQ = async () => {
 connectRabitMQ();
 
 //render login page
-app.get('/',(req,res) => {
-    res.render("login")
-})
+app.get("/", (req, res) => {
+  res.render("login");
+});
 
-app.get('/auth/login',(req,res) => {
-    res.redirect('/')
-})
-
-
-
+app.get("/auth/login", (req, res) => {
+  res.redirect("/");
+});
 
 //user sign-in
 app.post("/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
+
     const user = await UserDB.findOne({ email });
 
     if (!user) return res.status(400).json({ error: "Invalid credentials" });
@@ -75,8 +73,8 @@ app.post("/auth/login", async (req, res) => {
 
 //user signup
 app.post("/auth/register", async (req, res) => {
-    console.log(req.body);
-    
+  console.log(req.body);
+
   const { email, password, name } = req.body;
 
   const alreadyExist = await UserDB.findOne({ email });
@@ -90,7 +88,6 @@ app.post("/auth/register", async (req, res) => {
       password,
     });
     newUser.save();
-
 
     const notificationData = {
       email,
