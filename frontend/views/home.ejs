@@ -30,32 +30,10 @@
         </div>
     </nav>
 
-    <!-- Product Cards -->
     <div class="container">
         <h2 class="text-center">Available Products</h2>
         <div class="row" id="product-container">
-            <!-- Product cards will be dynamically inserted here -->
-            <% if( products.length > 0) {
-                 const productImage = "/gift-box.jpg"
-                products.forEach(product => {                
-                %>
-
-            <div class="col-md-3 mb-4">
-                <div class="card product-card">
-                    <img src=<%=productImage%> class="card-img-top" alt="${product.name}">
-                    <div class="card-body">
-                        <h4 class="card-title"><%=product.name  %> </h4>
-                        <p class="card-text"><%=product.description%></p>
-                        <h5 class="card-title"><%=product.price  %> </h5>
-                        <button class="buy-btn" onclick="buyProduct('${product.name}')">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <% 
-        });
-        } %>
-
+          <!-- Product cards will be dynamically inserted here -->
         </div>
     </div>
 
@@ -79,8 +57,8 @@
                             <input type="number" class="form-control" id="productPrice" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productImage" class="form-label">Product Image URL</label>
-                            <input type="url" class="form-control" id="productImage" required>
+                            <label for="productImage" class="form-label">Product Description</label>
+                            <input type="text" class="form-control" id="productDescription" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Product</button>
                     </form>
@@ -97,21 +75,52 @@
 
 
     <script>
-        // Example Products (to be fetched from a database in a real app)
-        const products = [
-            
-            { name: "Product 1", price: 100, },
-            { name: "Product 2", price: 150, },
-            { name: "Product 3", price: 200, },
-            { name: "Product 4", price: 250, }
-        ];
 
+        document.addEventListener("DOMContentLoaded" , () => {
+            fetchProduct();
+        })
+
+        async function fetchProduct() {
+            try {
+                
+                const response = await fetch("http://localhost:4000/product/get",{
+                    method:"GET",
+                    headers: {"Content-Type" : "application/json"},                    
+                })
+
+                const data = await response.json()
+                displayProducts(data);
+
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
+
+    function displayProducts(products) {
+      const container = document.getElementById("product-container");
+      container.innerHTML = ""; // Clear any existing content
+
+      products.forEach((product) => {
+        const productCard = `
+          <div class="col-md-3 mb-4">
+            <div class="card product-card">
+              <img src="/gift-box.jpg" class="card-img-top" alt="${product.name}">
+              <div class="card-body">
+                <h4 class="card-title">${product.name}</h4>
+                <p class="card-text">${product.description}</p>
+                <h5 class="card-title">${product.price} USD</h5>
+                <button class="buy-btn btn btn-primary" onclick="buyProduct('${product.name}')">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += productCard;
+      });
+    }
        
 
-        // Function to render product cards
     
-
-        // Function to handle product purchase
         function buyProduct(productName) {
             alert(`You bought ${productName}!`);
         }
@@ -123,25 +132,39 @@
         }
 
         // Handle Product Form submission
-        document.getElementById('productForm').addEventListener('submit', function (e) {
+        document.getElementById('productForm').addEventListener('submit',async function (e) {
             e.preventDefault();
             const productName = document.getElementById('productName').value;
             const productPrice = document.getElementById('productPrice').value;
-            const productImage = document.getElementById('productImage').value;
+            const productDescription = document.getElementById('productDescription').value;
 
             const newProduct = {
                 name: productName,
                 price: parseFloat(productPrice),
-                image: productImage
+                description: productDescription
             };
 
-            // Add the new product to the products array and render the updated list
-            products.push(newProduct);
-            //renderProducts();
+            const response = await fetch("http://localhost:4000/product/create",{
+                method:"POST",
+                headers:{"Content-Type" : "application/json"},
+                body:JSON.stringify(newProduct)
+            })
 
-            // Close the modal
-            const addProductModal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
-            addProductModal.hide();
+            const data = await response.json();
+
+            if (data.success) {
+                
+                alert("Product Added successfully")
+                // Close the modal
+                const addProductModal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+                addProductModal.hide();
+                return window.location.reload();
+
+            } else {
+                
+            }
+
+            
         });
 
        

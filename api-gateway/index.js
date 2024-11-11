@@ -1,8 +1,17 @@
 
   import express from 'express';
   import { createProxyMiddleware } from "http-proxy-middleware";
+  import cors from "cors"
   const app = express ();
   const PORT = process.env.API_PORT || 4000;
+
+
+  app.use(cors({
+    origin: '*', 
+    methods: ['GET', 'POST','PUT'],
+    allowedHeaders: '*',
+  }));
+
 
   const paths = {
     auth    : "http://localhost:5001",

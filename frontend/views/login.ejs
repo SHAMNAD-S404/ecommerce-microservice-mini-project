@@ -71,7 +71,8 @@
               console.log(data);
               
               if (data.success) {
-                    alert("login sucess")                               
+                    alert("login sucess")  
+                    return window.location.href ="/home"                             
               } else {
                 alert(data.error)
               }

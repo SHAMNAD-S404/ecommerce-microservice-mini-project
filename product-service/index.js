@@ -9,11 +9,10 @@ const isAuth    = require('../isAuthenticated')
 let channel, connection;
 let orders;
 
-app.set("view engine","ejs");
-app.set("views" , "./views")
 
 app.use(express.json())
-app.use(express.static("public"))
+
+
 
 //connecting to rabbitmq using amqplib
 async function connect() {
@@ -35,17 +34,15 @@ mongoose.connect("mongodb://localhost/product-service")
     });
 
 //get products page
+app.get("/get" , async(req,res) => {
 
-app.get("/" , async(req,res) => {
-    const products = await productDB.find();
-    console.log(products);
-    
-    return res.render('home',{products})
+    const products = await productDB.find();  
+    return res.status(200).json(products)
 
 })
 
 // add products
-app.post('/product/create',isAuth,async(req,res) => {
+app.post('/create',isAuth,async(req,res) => {
 
     const {name , description, price } = req.body;
     const newProduct = new productDB({
@@ -59,7 +56,7 @@ app.post('/product/create',isAuth,async(req,res) => {
 })
 
 //buy products
-app.post('/product/buy', isAuth , async(req,res) => {
+app.post('/buy', isAuth , async(req,res) => {
     const { ids } = req.body;
     const products = await productDB.find({_id:{ $in:ids } });
 
