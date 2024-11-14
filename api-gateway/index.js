@@ -6,11 +6,19 @@
   const PORT = process.env.API_PORT || 4000;
 
 
+  app.use((req,res,next) => {
+    console.log("mssg recieved at the api gateway")
+    next()
+  })
+
   app.use(cors({
-    origin: '*', 
-    methods: ['GET', 'POST','PUT'],
-    allowedHeaders: '*',
+    origin: 'http://localhost:3000', 
+    methods: ['GET', 'POST', 'PUT'],
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    credentials: true 
   }));
+  
+  
 
 
   const paths = {

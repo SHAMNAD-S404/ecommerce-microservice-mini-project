@@ -40,6 +40,6 @@ connect()
     .catch((err)=> console.log(err));
 
     app.listen(PORT,()=> {
-        console.log(`Notificatin service is running on http://localhost:${PORT}`);
+        console.log(`Notification service is running on http://localhost:${PORT}`);
         
     })

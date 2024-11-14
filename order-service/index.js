@@ -58,7 +58,7 @@ connect().then(async () => {
         JSON.stringify({
           email: newOrder.user,
           subject: "Order placed successfully",
-          message: `You are successfully order placed with the total amount of ${newOrder.total_price} `,
+          message: `You are order  successfully  placed with the total amount of ${newOrder.total_price} `,
         })
       )
     );

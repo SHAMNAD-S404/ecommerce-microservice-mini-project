@@ -44,9 +44,12 @@ const userLogin = async (req, res) => {
                     console.log(err);
                 } else {
 
-                    return res
-                        .status(200)
-                        .json({ success: "successfully logged in ", token: token });
+                     return res.cookie("token",token, {
+                            httpOnly:true,
+                            secure:false,
+                            maxAge:3600000
+                        })
+                        .status(200).json({success:"Successfully logged !"})
                 }
             });
         }

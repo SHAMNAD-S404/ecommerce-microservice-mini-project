@@ -83,11 +83,11 @@
         async function fetchProduct() {
             try {
                 
-                const response = await fetch("http://localhost:4000/product/get",{
-                    method:"GET",
-                    headers: {"Content-Type" : "application/json"},                    
-                })
-
+                const response = await fetch("http://localhost:4000/product/get", {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",  // Make sure cookies are sent
+            });
                 const data = await response.json()
                 displayProducts(data);
 
@@ -110,7 +110,7 @@
                 <h4 class="card-title">${product.name}</h4>
                 <p class="card-text">${product.description}</p>
                 <h5 class="card-title">${product.price} USD</h5>
-                <button class="buy-btn btn btn-primary" onclick="buyProduct('${product.name}')">Buy Now</button>
+                <button class="buy-btn btn btn-primary" onclick="buyProduct('${product._id}')">Buy Now</button>
               </div>
             </div>
           </div>
@@ -121,8 +121,29 @@
        
 
     
-        function buyProduct(productName) {
-            alert(`You bought ${productName}!`);
+        async function buyProduct(productID) {
+            
+            const response  = await fetch("http://localhost:4000/product/buy",{
+
+                method:"POST",
+                headers:{"Content-Type" : "application/json"},
+                body:JSON.stringify({ids:productID}),
+                credentials:"include"
+            })
+
+            const data = await response.json()
+
+            console.log(data);
+            
+
+            if (data.success) {
+
+                console.log(data);
+                
+
+            } else {
+                alert("000000000000")
+            }
         }
 
         // Function to handle Add Product
@@ -147,12 +168,16 @@
             const response = await fetch("http://localhost:4000/product/create",{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
-                body:JSON.stringify(newProduct)
+                body:JSON.stringify(newProduct),
+                credentials:"include"
             })
 
             const data = await response.json();
 
-            if (data.success) {
+            console.log(data);
+            
+
+            if (data.sucess) {
                 
                 alert("Product Added successfully")
                 // Close the modal
@@ -161,7 +186,7 @@
                 return window.location.reload();
 
             } else {
-                
+                console.log("hiiiiiiiiiiiiii")
             }
 
             

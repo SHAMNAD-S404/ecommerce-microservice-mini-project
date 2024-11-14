@@ -11,9 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 
 //setting up cors policy
 app.use(cors({
-  origin: '*', 
-  methods: ['GET', 'POST','PUT'],
-  allowedHeaders: '*',
+  origin: 'http://localhost:3000',  
+  methods: ['GET', 'POST', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+  credentials: true  // Required for cookies
 }));
 
 
@@ -25,7 +26,7 @@ userController.connectRabitMQ();
 app.post("/login", userController.userLogin);
 
 //user signup
-app.post("/auth/register", userController.userSignup);
+app.post("/register", userController.userSignup);
 
 //connecting to mongodb 
 connect();
