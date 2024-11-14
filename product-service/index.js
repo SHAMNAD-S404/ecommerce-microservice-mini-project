@@ -17,7 +17,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 //connecting to mongodb
 connectMongoDB.connect();
 
