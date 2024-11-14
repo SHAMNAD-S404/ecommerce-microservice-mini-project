@@ -15,6 +15,7 @@
  app.set('view engine','ejs');
  app.set('views',"./views")
 
+
  app.use(express.static("public"));
 
 
@@ -22,8 +23,6 @@
     .get("/home",loadProducts)
 
  
-
-
 
  app.listen(PORT,()=> {
     console.log(`front-end server is running on http://localhost:${PORT}`);

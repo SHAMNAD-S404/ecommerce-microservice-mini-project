@@ -9,6 +9,7 @@ const userController = require("./controller/userController")
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })); 
 
+
 //setting up cors policy
 app.use(cors({
   origin: 'http://localhost:3000',  

@@ -2,12 +2,12 @@
 import express from "express";
 import amqp    from "amqplib";
 import {sendMail} from "./utility/nodemailer.js"
-
 const app  = express()
 const PORT = process.env.NOTIFICATION_PORT || 5004;
 let channel , connection ;
 
 app.use(express.json());
+
 
 //connecting to rabbitmq
 const connect  = async () => {
@@ -39,7 +39,8 @@ connect()
     })
     .catch((err)=> console.log(err));
 
+
+
     app.listen(PORT,()=> {
-        console.log(`Notification service is running on http://localhost:${PORT}`);
-        
-    })
+        console.log(`Notification service is running on http://localhost:${PORT}`);   
+    });

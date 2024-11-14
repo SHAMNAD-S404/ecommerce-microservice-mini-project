@@ -7,7 +7,7 @@
     user: String,
     total_price : Number
  },
-{timestamps:true})
+ {timestamps:true});
 
 
 module.exports = mongoose.model("Orders",orderSchema); 

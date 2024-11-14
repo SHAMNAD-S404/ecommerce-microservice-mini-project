@@ -19,7 +19,7 @@ async function connectRabitMQ() {
     }
 };
 
-
+//login function
 const userLogin = async (req, res) => {
 
     try {
@@ -60,7 +60,7 @@ const userLogin = async (req, res) => {
     }
 }
 
-
+//signup function 
 const userSignup = async (req, res) => {
     try {
 
