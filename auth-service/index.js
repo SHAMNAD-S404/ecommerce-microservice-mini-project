@@ -8,6 +8,9 @@ const userController = require("./controller/userController")
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })); 
+app.use((req,res,next) => {
+  console.log("req recieved in auth service ", req.method)
+})
 
 
 //setting up cors policy

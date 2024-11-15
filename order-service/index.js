@@ -65,7 +65,7 @@ connect().then(async () => {
 
 //connecting db
 mongoose
-  .connect("mongodb://localhost/order-service")
+  .connect("mongodb://mongodb:27017/order-service")
   .then(() => {
     console.log("order service db is connected .....");
   })

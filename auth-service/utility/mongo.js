@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 function connect() {
     
   return mongoose
-    .connect("mongodb://localhost/auth-service")
+    .connect("mongodb://mongodb:27017/auth-service")
     .then(() => {
       console.log("Auth Service DB connected.........");
     })
