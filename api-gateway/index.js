@@ -7,7 +7,7 @@
 
 
   app.use((req,res,next) => {
-    console.log("mssg recieved at the api gateway")
+    console.log(`mssg recieved at the api gateway req method : ${req.method} path : ${req.path}`)
     next()
   })
 

@@ -9,7 +9,8 @@ const userController = require("./controller/userController")
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })); 
 app.use((req,res,next) => {
-  console.log("req recieved in auth service ", req.method)
+  console.log("req recieved in auth service ", req.method , req.path)
+  next()
 })
 
 
@@ -22,19 +23,22 @@ app.use(cors({
 }));
 
 
-//connection to rabbitMQ
-userController.connectRabitMQ();
-
-
 //user sign-in
 app.post("/login", userController.userLogin);
 
 //user signup
 app.post("/register", userController.userSignup);
 
+//get users
+app.get("/get",userController.getUsers)
+
 //connecting to mongodb 
 connect();
 
-app.listen(PORT, () => {
-  console.log(`Auth service at http://localhost:${PORT}`);
-});
+// Connect to RabbitMQ before starting the server
+userController.connectRabitMQ().then(() => {
+  console.log("RabbitMQ connected!");
+  app.listen(5001, () => console.log("Auth service running on port 5001"));
+}).catch(err => {
+  console.error("Failed to connect RabbitMQ:", err);
+})

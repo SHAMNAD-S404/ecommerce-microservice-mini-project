@@ -2,7 +2,7 @@
 const UserDB = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const amqp = require("amqplib");
-let channel, connection;
+var channel, connection;
 
 
 //connecting to rabbitMQ
@@ -13,16 +13,22 @@ async function connectRabitMQ() {
         channel = await connection.createChannel();
         //here creating NOTIFICATION queue again have no problem its only recreate if its not exist
         await channel.assertQueue("NOTIFICATION");
+        console.log("chanel **************************",channel)
 
     } catch (error) {
         console.error("failed to connect with rabbitmq , error:", error);
     }
 };
 
+
+
 //login function
 const userLogin = async (req, res) => {
 
     try {
+
+        console.log("im insiddeee auth controller");
+        
 
         const { email, password } = req.body;
         console.log(req.body);
@@ -83,13 +89,19 @@ const userSignup = async (req, res) => {
                 subject: "Welcome to our Service",
                 message: `Hi ${name}, your account has been created successfully.`,
             };
-
+            console.log("i need to seeeeeeeeee",channel)
             //send message to the NOTIFICATIN QUEUE
-            channel.sendToQueue(
-                "NOTIFICATION",
-                Buffer.from(JSON.stringify(notificationData))
-            );
-            console.log("Message was sended to notification queue ");
+            if (channel) {
+                console.log(channel);
+                
+                channel.sendToQueue(
+                  "NOTIFICATION",
+                  Buffer.from(JSON.stringify(notificationData))
+                );
+                console.log("Message was sent to notification queue");
+              } else {
+                console.error("RabbitMQ channel is not initialized!");
+              }
 
             return res
                 .status(200)
@@ -102,8 +114,18 @@ const userSignup = async (req, res) => {
     }
 }
 
+const getUsers = async (req,res) => {
+    try {
+        const userData = await UserDB.find();
+        return res.status(200).json({userData})
+    } catch (error) {
+        console.log(error);     
+    }
+}
+
 module.exports = {
     userLogin,
     userSignup,
-    connectRabitMQ
+    connectRabitMQ,
+    getUsers
 }
