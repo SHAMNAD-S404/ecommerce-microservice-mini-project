@@ -29,6 +29,7 @@ services:
       - api-gateway
 
   auth-service:
+    container_name: auth-service
     build: ./auth-service
     ports:
       - "5001:5001"
@@ -38,6 +39,7 @@ services:
       - rabbitmq
 
   product-service:
+    container_name: product-service
     build: ./product-service
     ports:
       - "5002:5002"
@@ -48,6 +50,7 @@ services:
 
 
   order-service:
+    container_name: order-service
     build: ./order-service
     ports:
       - "5003:5003"
@@ -59,6 +62,7 @@ services:
 
 
   notification-service:
+    container_name: notification-service
     build: ./notification-service
     ports:
       - "5004:5004"
