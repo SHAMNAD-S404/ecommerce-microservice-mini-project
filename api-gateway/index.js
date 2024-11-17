@@ -23,9 +23,9 @@ app.use(cors({
 
 const paths = {
   auth    : "http://auth-service:5001",
-  product : "http://localhost:5002",
-  order   : "http://localhost:5003",
-  notification: "http://localhost:5004"
+  product : "http://product-service:5002",
+  order   : "http://order-service:5003",
+  notification: "http://notification-service:5004"
 };
 
 

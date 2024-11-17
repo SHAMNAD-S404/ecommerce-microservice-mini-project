@@ -133,16 +133,15 @@
 
             const data = await response.json()
 
-            console.log(data);
             
-
             if (data.success) {
+
+                alert(data.success)
 
                 console.log(data);
                 
-
             } else {
-                alert("000000000000")
+                alert(data.error)
             }
         }
 
@@ -177,16 +176,16 @@
             console.log(data);
             
 
-            if (data.sucess) {
+            if (data.success) {
                 
-                alert("Product Added successfully")
+                alert("Product Added successfully",data.success)
                 // Close the modal
                 const addProductModal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
                 addProductModal.hide();
                 return window.location.reload();
 
             } else {
-                console.log("hiiiiiiiiiiiiii")
+                console.log("failed")
             }
 
             
