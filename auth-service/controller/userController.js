@@ -86,7 +86,6 @@ const userSignup = async (req, res) => {
             };
             //send message to the NOTIFICATIN QUEUE
             if (channel) {
-                console.log(channel);
                 
                 channel.sendToQueue(
                   "NOTIFICATION",
