@@ -8,7 +8,7 @@ var channel, connection;
 //connecting to rabbitMQ
 async function connectRabitMQ() {
     try {
-        const amqpServer = "amqp://localhost:5672";
+        const amqpServer = "amqp://ecommerce-microservice_rabbitmq_1:5672";
         connection = await amqp.connect(amqpServer);
         channel = await connection.createChannel();
         //here creating NOTIFICATION queue again have no problem its only recreate if its not exist

@@ -34,7 +34,7 @@ connectMongoDB.connect();
 //connecting to rabbitmq and starting the server
 async function connect() {
     try {
-        const amqpServer = "amqp://localhost:5672";
+        const amqpServer = "amqp://ecommerce-microservice_rabbitmq_1:5672";
         connection = await amqp.connect(amqpServer);
         channel = await connection.createChannel();
         await channel.assertQueue("PRODUCT");
