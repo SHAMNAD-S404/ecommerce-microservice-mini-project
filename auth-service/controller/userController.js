@@ -8,12 +8,11 @@ var channel, connection;
 //connecting to rabbitMQ
 async function connectRabitMQ() {
     try {
-        const amqpServer = "amqp://ecommerce-microservice_rabbitmq_1:5672";
+        const amqpServer = "amqp://rabbitmq:5672";
         connection = await amqp.connect(amqpServer);
         channel = await connection.createChannel();
         //here creating NOTIFICATION queue again have no problem its only recreate if its not exist
         await channel.assertQueue("NOTIFICATION");
-        console.log("chanel **************************",channel)
 
     } catch (error) {
         console.error("failed to connect with rabbitmq , error:", error);
@@ -26,9 +25,6 @@ async function connectRabitMQ() {
 const userLogin = async (req, res) => {
 
     try {
-
-        console.log("im insiddeee auth controller");
-        
 
         const { email, password } = req.body;
         console.log(req.body);
@@ -62,7 +58,6 @@ const userLogin = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-
     }
 }
 
@@ -89,7 +84,6 @@ const userSignup = async (req, res) => {
                 subject: "Welcome to our Service",
                 message: `Hi ${name}, your account has been created successfully.`,
             };
-            console.log("i need to seeeeeeeeee",channel)
             //send message to the NOTIFICATIN QUEUE
             if (channel) {
                 console.log(channel);

@@ -74,5 +74,5 @@ mongoose
   });
 
 app.listen(PORT, () => {
-  console.log(`Product service at http://localhost:${PORT}`);
+  console.log(`Order service at http://localhost:${PORT}`);
 });

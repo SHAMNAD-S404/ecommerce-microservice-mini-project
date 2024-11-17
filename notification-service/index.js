@@ -13,7 +13,7 @@ app.use(express.json());
 const connect  = async () => {
     try {
         
-         const amqpServer = "amqp://ecommerce-microservice_rabbitmq_1:5672";
+         const amqpServer = "amqp://rabbitmq:5672";
          connection = await amqp.connect(amqpServer)
          channel    = await connection.createChannel();
          await channel.assertQueue("NOTIFICATION")
