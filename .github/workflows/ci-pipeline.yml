@@ -51,17 +51,17 @@ jobs:
       - name: Build and Push Docker Images
         run: |
           # Build Images for all services
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecom-auth-service:latest ./auth-service
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecom-product-service:latest ./product-service
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecom-order-service:latest ./order-service
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecom-notification-service:latest ./notification-service
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecom-frontend-service:latest ./frontend
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ecom-apigateway-service:latest ./api-gateway
+          docker build -t shamnads306/ecom-auth-service:latest ./auth-service
+          docker build -t shamnads306/ecom-product-service:latest ./product-service
+          docker build -t shamnads306/ecom-order-service:latest ./order-service
+          docker build -t shamnads306/ecom-notification-service:latest ./notification-service
+          docker build -t shamnads306/ecom-frontend-service:latest ./frontend
+          docker build -t shamnads306/ecom-apigateway-service:latest ./api-gateway
 
           # Push images to Docker Hub
-          docker push ${{ secrets.DOCKER_USERNAME }}/ecom-auth-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ecom-product-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ecom-order-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ecom-notification-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ecom-frontend-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ecom-apigateway-service:latest
+          docker push shamnads306/ecom-auth-service:latest
+          docker push shamnads306/ecom-product-service:latest
+          docker push shamnads306/ecom-order-service:latest
+          docker push shamnads306/ecom-notification-service:latest
+          docker push shamnads306/ecom-frontend-service:latest
+          docker push shamnads306/ecom-apigateway-service:latest
