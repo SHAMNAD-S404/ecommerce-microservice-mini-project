@@ -73,6 +73,8 @@ mongoose
     console.log(err);
   });
 
+
+//Port is listen on 
 app.listen(PORT, () => {
   console.log(`Order service at http://localhost:${PORT}`);
 });
