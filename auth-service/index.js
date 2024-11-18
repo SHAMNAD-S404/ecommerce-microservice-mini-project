@@ -14,7 +14,7 @@ app.use((req,res,next) => {
 })
 
 
-//setting up cors policy
+//setting up cors policy 
 app.use(cors({
   origin: 'http://localhost:3000',  
   methods: ['GET', 'POST', 'PUT'],
@@ -31,7 +31,6 @@ app.post("/register", userController.userSignup);
 
 //get users
 app.get("/get",userController.getUsers)
-
 //connecting to mongodb 
 connect();
 

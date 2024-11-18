@@ -14,21 +14,13 @@ spec:
       labels:
         app: apigateway-service
     spec:
+      initContainers:
+        - name: wait-for-rabbitmq
+          image: busybox
+          command: ['sh', '-c', 'until nc -z rabbitmq 5672; do echo "Waiting for RabbitMQ..."; sleep 2; done']
       containers:
         - name: apigateway-service
-          image: ecommerce-microservice_api-gateway:latest
+          image: shamnads306/ecom-apigateway-service:latest
           ports:
             - containerPort: 4000
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 4000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 4000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          

@@ -16,18 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-service
-          image: ecommerce-microservice_frontend:latest
+          image: shamnads306/ecom-frontend-service:latest
           ports:
             - containerPort: 3000
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+         

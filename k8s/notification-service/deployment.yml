@@ -14,23 +14,16 @@ spec:
       labels:
         app: notification-service
     spec:
+      initContainers:
+        - name: wait-for-rabbitmq
+          image: busybox
+          command: ['sh', '-c', 'until nc -z rabbitmq 5672; do echo "Waiting for RabbitMQ..."; sleep 2; done']
       containers:
         - name: notification-service
-          image: ecommerce-microservice_notification-service:latest
+          image: shamnads306/ecom-notification-service:latest
           ports:
             - containerPort: 5004
           envFrom:
             - secretRef:
                 name: notification-secret
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 5004
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 5004
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          

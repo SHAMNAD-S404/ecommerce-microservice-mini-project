@@ -4,32 +4,22 @@ metadata:
   name: order-service
   labels:
     app: order-service
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
         app: order-service
-      template:
-        metadata:
-          labels:
-            app: order-service
-        spec:
-          containers:
-            - name: order-service
-              image: ecommerce-microservice_order-service:latest
-              ports:
-                - containerPort: 5003
-              livenessProbe:
-                httpGet:
-                  path: /health
-                  port: 5003
-                initialDelaySeconds: 5
-                periodSeconds: 10
-
-              readinessProbe:
-                httpGet:
-                  path: /health
-                  port: 5003
-                initialDelaySeconds: 5
-                periodSeconds: 10
-
+    spec:
+      initContainers:
+        - name: wait-for-rabbitmq
+          image: busybox
+          command: ['sh', '-c', 'until nc -z rabbitmq 5672; do echo "Waiting for RabbitMQ..."; sleep 2; done']
+      containers:
+        - name: order-service
+          image: shamnads306/ecom-order-service:latest
+          ports:
+            - containerPort: 5003
