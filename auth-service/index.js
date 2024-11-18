@@ -23,14 +23,16 @@ app.use(cors({
 }));
 
 
-//user sign-in
+//user sign-in api
 app.post("/login", userController.userLogin);
 
-//user signup
+//user signup api
 app.post("/register", userController.userSignup);
 
-//get users
+//get users api
 app.get("/get",userController.getUsers)
+
+
 //connecting to mongodb 
 connect();
 
