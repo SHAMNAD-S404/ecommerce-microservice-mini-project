@@ -1,18 +1,20 @@
-const express = require ("express");
-const app = express ();
-const PORT = process.env.AUTH_PORT || 5002;
-const amqp = require ("amqplib");
-const productDB = require ("./model/productModel");
-const cookieParser = require ("cookie-parser");
-const isAuth = require ('./utility/isAuthenticated');
-const connectMongoDB = require ('./utility/mongoConnect')
-const cors = require("cors")
+const express           = require ("express");
+const app               = express ();
+const PORT              = process.env.AUTH_PORT || 5002;
+const amqp              = require ("amqplib");
+const productDB         = require ("./model/productModel");
+const cookieParser      = require ("cookie-parser");
+const isAuth            = require ('./utility/isAuthenticated');
+const connectMongoDB    = require ('./utility/mongoConnect')
+const cors              = require("cors")
 const productController = require ("./controller/productControlller")
 let channel, connection;
+
 
 app.use(express.json());
 app.use(cookieParser());
 
+//middleware to log req
 app.use((req, res, next) => {
     console.log("msg received at product-service", req.method);
     next();
