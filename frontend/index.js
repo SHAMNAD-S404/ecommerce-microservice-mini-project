@@ -4,7 +4,7 @@
  const PORT = process.env.FRONT_PORT || 3000;
  import {loadLogin, loadProducts} from "./controller/controller.js"
 
-
+//cors setup
  app.use(cors({
    origin: 'http://localhost:3000',  
    methods: ['GET', 'POST', 'PUT'],
@@ -18,7 +18,7 @@
 
  app.use(express.static("public"));
 
-
+//rest api
  app.get("/",loadLogin)
     .get("/home",loadProducts)
 
